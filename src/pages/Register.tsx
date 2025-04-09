@@ -23,7 +23,7 @@ export const Register = () => {
       alert("Verifica tu contraseña.");
       return;
     }
-    console.log("Formulario válido ✅");
+    console.log("Formulario válido");
   };
 
   return (
@@ -33,7 +33,8 @@ export const Register = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        minHeight: "140vh",
+        px: 2,
       }}
     >
       <Box
@@ -45,19 +46,19 @@ export const Register = () => {
           alignItems: "center",
           justifyContent: "center",
           border: 1,
-          padding: 4,
+          padding: { xs: 2, sm: 4 },
           borderRadius: 3,
           width: "100%",
-          maxWidth: "350px",
+          maxWidth: { xs: "100%", sm: "350px" },
           boxShadow: 3,
           borderColor: "grey.300",
         }}
       >
-        <Stack p={2}>
-          <Typography variant="h4" align="justify">
+        <Stack p={2} spacing={1} sx={{ width: "100%" }}>
+          <Typography variant="h5" align="center">
             Registrarse
           </Typography>
-          <Typography variant="subtitle1" align="justify" sx={{ opacity: 0.5 }}>
+          <Typography variant="body2" align="center" sx={{ opacity: 0.6 }}>
             Ingresa tus datos para registrarte
           </Typography>
         </Stack>
@@ -96,6 +97,7 @@ export const Register = () => {
             error={isPasswordMatch}
             helperText={isPasswordMatch ? "Las contraseñas no coinciden" : ""}
           />
+
           <Button
             type="submit"
             variant="contained"
@@ -111,7 +113,7 @@ export const Register = () => {
                 backgroundColor:
                   !isPasswordValid || password !== passwordConfirm
                     ? "grey.400"
-                    : "grey.500",
+                    : "grey.700",
               },
             }}
           >
@@ -119,8 +121,8 @@ export const Register = () => {
           </Button>
         </Stack>
 
-        <Stack p={1}>
-          <Typography>
+        <Stack p={2}>
+          <Typography variant="body2" align="center">
             ¿Tienes cuenta?{" "}
             <Typography
               component="a"
@@ -133,7 +135,7 @@ export const Register = () => {
                 "&:hover": { textDecoration: "underline" },
               }}
             >
-              inicia sesión
+              Inicia sesión
             </Typography>
           </Typography>
         </Stack>

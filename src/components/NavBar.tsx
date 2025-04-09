@@ -28,13 +28,14 @@ export const NavBar = () => {
             variant="h6"
             align="justify"
             component="div"
-            sx={{ flexGrow: 2, color: "black", fontWeight: "bold"  }}
+            sx={{ flexGrow: 2, color: "black", fontWeight: "bold" }}
           >
             Ecommerce
           </Typography>
           <Button
             href="/login"
             sx={{
+              display: { xs: "none", md: "inline-flex" },
               borderRadius: 3,
               border: 1,
               borderColor: "grey.300",
@@ -45,11 +46,13 @@ export const NavBar = () => {
               },
             }}
           >
-            Iniciar Sesion
+            Iniciar Sesión
           </Button>
+
           <Button
             href="/register"
             sx={{
+              display: { xs: "none", md: "inline-flex" },
               borderRadius: 3,
               color: "inherit",
               border: 1,
