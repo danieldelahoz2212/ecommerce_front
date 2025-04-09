@@ -1,5 +1,5 @@
-import { Container, Box, Typography } from "@mui/material";
-import { Cards, ProductCarousel } from "../components/index";
+import { Container, Box, Typography} from "@mui/material";
+import { Cards, ProductCarousel, ProductRecommendation } from "../components/index";
 export const Home = () => {
   return (
     <Container
@@ -26,6 +26,10 @@ export const Home = () => {
         </Typography>
       </Box>
       <ProductCarousel/>
+      <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mt: 4 }}>
+      <ProductRecommendation/>
+        Catálogo De Productos
+      </Typography>
       <Cards />
     </Container>
   );

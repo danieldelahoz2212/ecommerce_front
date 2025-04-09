@@ -1,4 +1,12 @@
-import { Box, Typography, Grid, CardMedia, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  CardMedia,
+  IconButton,
+  Divider,
+  Button,
+} from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -8,21 +16,21 @@ const products = [
     name: "Camiseta Premium",
     description: "Camiseta de algodón 100% de alta calidad",
     price: 29.99,
-    image: "https://via.placeholder.com/250",
+    image: "https://picsum.photos/id/1011/400/300",
   },
   {
     id: 2,
     name: "Sudadera Elegante",
     description: "Sudadera con capucha y bolsillos",
     price: 49.99,
-    image: "https://via.placeholder.com/250",
+    image: "https://picsum.photos/id/1015/400/300",
   },
   {
     id: 3,
     name: "Pantalón Deportivo",
     description: "Pantalón cómodo para el día a día",
     price: 39.99,
-    image: "https://via.placeholder.com/250",
+    image: "https://picsum.photos/id/1025/400/300",
   },
 ];
 
@@ -70,7 +78,7 @@ export const ProductCarousel = () => {
                 width: 10,
                 height: 10,
                 borderRadius: "50%",
-                bgcolor: idx === 0 ? "black" : "grey.300",
+                bgcolor: idx === currentIndex ? "black" : "grey.300",
                 cursor: "pointer",
                 transition: "background-color 0.3s",
               }}
@@ -79,36 +87,64 @@ export const ProductCarousel = () => {
         </Box>
       </Box>
 
-      <Grid container spacing={3} alignItems="center" />
-      <Grid item xs={12} md={6}>
-        <Box position="relative">
-          <CardMedia
-            component="img"
-            image={product.image}
-            alt={product.name}
-            sx={{ borderRadius: 2 }}
-          />
-        </Box>
-      </Grid>
+      <Divider
+        sx={{
+          mb: 3,
+          borderBottomWidth: 2,
+          borderColor: "grey.300",
+          opacity: 1,
+        }}
+      />
 
-      <Grid item xs={12} md={6}>
-        <Typography variant="h5">{product.name}</Typography>
-        <Typography variant="body2" color="text.secondary" mt={1}>
-          {product.description}
-        </Typography>
-        <Typography variant="h6" mt={2}>
-          ${product.price}
-        </Typography>
-      </Grid>
+      <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12} md={6}>
+          <Box display="flex" justifyContent="center">
+            <CardMedia
+              component="img"
+              image={product.image}
+              alt={product.name}
+              sx={{
+                borderRadius: 2,
+                objectFit: "cover",
+                height: 300,
+                width: "70%",
+              }}
+            />
+          </Box>
+        </Grid>
 
+        <Grid item xs={12} md={6}>
+          <Typography variant="h5" fontWeight="bold">
+            {product.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mt={1}>
+            {product.description}
+          </Typography>
+          <Typography variant="h6" mt={2} fontWeight="bold">
+            ${product.price}
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              width: "70%",
+              padding: "10px 0",
+              "&:hover": { backgroundColor: "#333" },
+            }}
+          >
+            Añadir al carrito
+          </Button>
+        </Grid>
+      </Grid>
       <IconButton
-      onClick={handlePrev}
+        onClick={handlePrev}
         sx={{
           position: "absolute",
           left: 8,
           top: "50%",
           transform: "translateY(-50%)",
-          bgcolor: "Background.paper",
+          bgcolor: "background.paper",
           boxShadow: 1,
         }}
       >
@@ -121,7 +157,7 @@ export const ProductCarousel = () => {
           right: 8,
           top: "50%",
           transform: "translateY(-50%)",
-          bgcolor: "Background.paper",
+          bgcolor: "background.paper",
           boxShadow: 1,
         }}
       >

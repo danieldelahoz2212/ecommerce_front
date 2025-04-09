@@ -14,21 +14,21 @@ import {
       name: "Camiseta Premium",
       description: "Camiseta de algodón 100% de alta calidad",
       price: 29.99,
-      image: "https://via.placeholder.com/250",
+      image: "https://picsum.photos/id/1011/400/300",
     },
     {
       id: 2,
       name: "Sudadera Elegante",
       description: "Sudadera con capucha y bolsillos",
       price: 49.99,
-      image: "https://via.placeholder.com/250",
+      image: "https://picsum.photos/id/1011/400/300",
     },
     {
       id: 3,
       name: "Pantalón Deportivo",
       description: "Pantalón cómodo para el día a día",
       price: 39.99,
-      image: "https://via.placeholder.com/250",
+      image: "https://picsum.photos/id/1011/400/300",
     },
   ];
   

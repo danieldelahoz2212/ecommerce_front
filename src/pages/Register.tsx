@@ -6,8 +6,26 @@ import {
   Stack,
   Box,
 } from "@mui/material";
+import { useState } from "react";
+import { PasswordStrength } from "../components/index";
 
 export const Register = () => {
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const isPasswordMatch =
+    passwordConfirm !== "" && password !== passwordConfirm;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isPasswordValid || password !== passwordConfirm) {
+      alert("Verifica tu contraseña.");
+      return;
+    }
+    console.log("Formulario válido ✅");
+  };
+
   return (
     <Container
       sx={{
@@ -20,6 +38,7 @@ export const Register = () => {
     >
       <Box
         component="form"
+        onSubmit={handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -42,6 +61,7 @@ export const Register = () => {
             Ingresa tus datos para registrarte
           </Typography>
         </Stack>
+
         <Stack spacing={2} sx={{ width: "100%" }}>
           <TextField label="Nombre" type="text" fullWidth required />
           <TextField label="Apellido" type="text" fullWidth required />
@@ -51,23 +71,54 @@ export const Register = () => {
             fullWidth
             required
           />
-          <TextField label="Contraseña" type="password" fullWidth required />
-          <TextField label="Confirmar contraseña" type="password" fullWidth required />
+
+          <TextField
+            label="Contraseña"
+            type="password"
+            fullWidth
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <PasswordStrength
+            password={password}
+            onValidChange={setIsPasswordValid}
+          />
+
+          <TextField
+            label="Confirmar contraseña"
+            type="password"
+            fullWidth
+            required
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            error={isPasswordMatch}
+            helperText={isPasswordMatch ? "Las contraseñas no coinciden" : ""}
+          />
           <Button
             type="submit"
             variant="contained"
+            fullWidth
+            disabled={!isPasswordValid || password !== passwordConfirm}
             sx={{
-              backgroundColor: "black",
+              backgroundColor:
+                !isPasswordValid || password !== passwordConfirm
+                  ? "grey.400"
+                  : "black",
               color: "white",
               "&:hover": {
-                backgroundColor: "grey.500",
+                backgroundColor:
+                  !isPasswordValid || password !== passwordConfirm
+                    ? "grey.400"
+                    : "grey.500",
               },
             }}
-            fullWidth
           >
             Registrarse
           </Button>
         </Stack>
+
         <Stack p={1}>
           <Typography>
             ¿Tienes cuenta?{" "}

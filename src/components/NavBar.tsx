@@ -62,7 +62,7 @@ export const NavBar = () => {
               ml: 2,
             }}
           >
-            Registrarce
+            Registrarse
           </Button>
         </Toolbar>
       </AppBar>
