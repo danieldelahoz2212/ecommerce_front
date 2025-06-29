@@ -7,8 +7,12 @@ import {
   Button,
 } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import Badge from "@mui/material/Badge";
+import { useCart } from "../context/CartContext";
 
 export const NavBar = () => {
+  const { cart } = useCart();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -67,6 +71,11 @@ export const NavBar = () => {
           >
             Registrarse
           </Button>
+          <IconButton sx={{ color: "black", ml: 2 }} href="#carrito">
+            <Badge badgeContent={cart.length} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Box>

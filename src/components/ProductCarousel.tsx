@@ -8,7 +8,9 @@ import {
   Button,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "../context/CartContext";
 
 const products = [
   {
@@ -37,6 +39,20 @@ const products = [
 export const ProductCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const product = products[currentIndex];
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === products.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000); // Cambia cada 4 segundos
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [currentIndex]);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -86,7 +102,6 @@ export const ProductCarousel = () => {
           ))}
         </Box>
       </Box>
-
       <Divider
         sx={{
           mb: 3,
@@ -95,48 +110,57 @@ export const ProductCarousel = () => {
           opacity: 1,
         }}
       />
-
-      <Grid container spacing={3} alignItems="center">
-        <Grid item xs={12} md={6}>
-          <Box display="flex" justifyContent="center">
-            <CardMedia
-              component="img"
-              image={product.image}
-              alt={product.name}
-              sx={{
-                borderRadius: 2,
-                objectFit: "cover",
-                height: 300,
-                width: "70%",
-              }}
-            />
-          </Box>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Typography variant="h5" fontWeight="bold">
-            {product.name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" mt={1}>
-            {product.description}
-          </Typography>
-          <Typography variant="h6" mt={2} fontWeight="bold">
-            ${product.price}
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "black",
-              color: "white",
-              width: "70%",
-              padding: "10px 0",
-              "&:hover": { backgroundColor: "#333" },
-            }}
-          >
-            Añadir al carrito
-          </Button>
-        </Grid>
-      </Grid>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={product.id}
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -80 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Box display="flex" justifyContent="center">
+                <CardMedia
+                  component="img"
+                  image={product.image}
+                  alt={product.name}
+                  sx={{
+                    borderRadius: 2,
+                    objectFit: "cover",
+                    height: 300,
+                    width: "70%",
+                  }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h5" fontWeight="bold">
+                {product.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mt={1}>
+                {product.description}
+              </Typography>
+              <Typography variant="h6" mt={2} fontWeight="bold">
+                ${product.price}
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "black",
+                  color: "white",
+                  width: "70%",
+                  padding: "10px 0",
+                  "&:hover": { backgroundColor: "#333" },
+                }}
+                onClick={() => addToCart(product)}
+              >
+                Añadir al carrito
+              </Button>
+            </Grid>
+          </Grid>
+        </motion.div>
+      </AnimatePresence>
       <IconButton
         onClick={handlePrev}
         sx={{
