@@ -8,7 +8,7 @@ export const Home = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "justify",
+        alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
         padding: 4,
@@ -20,12 +20,12 @@ export const Home = () => {
         transition={{ duration: 0.8 }}
       >
         <Box sx={{ textAlign: "center", mb: 4 }}>
-          <Typography variant="h3" fontWeight="blod" gutterBottom>
+          <Typography variant="h3" fontWeight="bold" gutterBottom>
             Nuestros Productos
           </Typography>
           <Typography
             variant="subtitle1"
-            align="justify"
+            align="center"
             sx={{ opacity: 0.7, maxWidth: "600px", margin: "0 auto" }}
           >
             Explora nuestra selección de productos de alta calidad. Encuentra lo

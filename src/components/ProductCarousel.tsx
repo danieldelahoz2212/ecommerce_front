@@ -71,11 +71,15 @@ export const ProductCarousel = () => {
       sx={{
         position: "relative",
         overflow: "hidden",
-        borderRadius: 2,
+        borderRadius: 3,
         border: "1px solid",
         borderColor: "divider",
-        boxShadow: 3,
-        p: 2,
+        boxShadow: 4,
+        p: { xs: 2, md: 6 },
+        maxWidth: 1300,
+        margin: "40px auto",
+        minHeight: { xs: 340, md: 420 },
+        background: "#fff",
       }}
     >
       <Box
@@ -126,22 +130,23 @@ export const ProductCarousel = () => {
                   image={product.image}
                   alt={product.name}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 3,
                     objectFit: "cover",
-                    height: 300,
-                    width: "70%",
+                    height: { xs: 220, md: 370 },
+                    width: { xs: '90%', md: 370 },
+                    boxShadow: 2,
                   }}
                 />
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Typography variant="h5" fontWeight="bold">
+              <Typography variant="h4" fontWeight="bold" mb={2}>
                 {product.name}
               </Typography>
-              <Typography variant="body2" color="text.secondary" mt={1}>
+              <Typography variant="h6" color="text.secondary" mt={1} mb={2}>
                 {product.description}
               </Typography>
-              <Typography variant="h6" mt={2} fontWeight="bold">
+              <Typography variant="h5" mt={2} fontWeight="bold" mb={3}>
                 ${product.price}
               </Typography>
               <Button
@@ -149,8 +154,11 @@ export const ProductCarousel = () => {
                 sx={{
                   backgroundColor: "black",
                   color: "white",
-                  width: "70%",
-                  padding: "10px 0",
+                  width: { xs: "100%", md: "70%" },
+                  fontSize: 18,
+                  padding: "16px 0",
+                  borderRadius: 2,
+                  boxShadow: 2,
                   "&:hover": { backgroundColor: "#333" },
                 }}
                 onClick={() => addToCart(product)}

@@ -1,0 +1,11 @@
+.user-profile {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fafbfc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #0001;
+}
+.user-profile > div {
+  margin-bottom: 16px;
+}

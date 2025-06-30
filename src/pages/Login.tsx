@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Container,
   Typography,
@@ -5,10 +6,43 @@ import {
   Button,
   Stack,
   Box,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/loginService";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await loginUser({ email, password });
+      if (res.token && res.user) {
+        login(res.token);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        navigate("/user");
+      } else {
+        alert("Credenciales incorrectas");
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("Error al iniciar sesión");
+      }
+    }
+  };
+
   return (
     <Container
       sx={{
@@ -27,6 +61,7 @@ export const Login = () => {
       >
         <Box
           component="form"
+          onSubmit={handleSubmit}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -56,8 +91,30 @@ export const Login = () => {
               type="email"
               fullWidth
               required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
-            <TextField label="Contraseña" type="password" fullWidth required />
+            <TextField
+              label="Contraseña"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              required
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((show) => !show)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
             <Button
               type="submit"
               variant="contained"
