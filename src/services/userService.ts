@@ -24,14 +24,20 @@ export async function updateUserProfile(id: string, data: {
   password?: string;
 }) {
   const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No autenticado. Inicia sesión de nuevo.");
+  }
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
+      token: token,
     },
     body: JSON.stringify(data),
   });
+  if (res.status === 401) {
+    throw new Error("Sesión expirada o token inválido. Por favor, inicia sesión de nuevo.");
+  }
   if (!res.ok) throw new Error("Error al actualizar usuario");
   return res.json();
 }
