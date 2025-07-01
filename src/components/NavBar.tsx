@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   AppBar,
   Box,
@@ -169,7 +169,6 @@ export const NavBar = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      {/* Drawer lateral */}
       <Drawer
         anchor="left"
         open={drawerOpen}

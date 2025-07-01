@@ -15,3 +15,23 @@ export async function registerUser(data: {
   if (!res.ok) throw new Error("Error al registrar usuario");
   return res.json();
 }
+
+export async function updateUserProfile(id: string, data: {
+  name?: string;
+  lastName?: string;
+  email?: string;
+  img?: string | null;
+  password?: string;
+}) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Error al actualizar usuario");
+  return res.json();
+}
