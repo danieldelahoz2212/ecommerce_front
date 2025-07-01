@@ -16,6 +16,7 @@ import { updateUserProfile } from "../services/userService";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import './UserProfile.css';
+import { RoleManager } from "../components/RoleManager";
 
 interface User {
   id?: string;
@@ -123,8 +124,8 @@ export const UserProfile = () => {
   if (!user) return null;
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh" bgcolor="#f5f6fa" sx={{ mt: { xs: 8, md: 10 } }}>
-      <Card sx={{ maxWidth: 440, width: '100%', borderRadius: 4, boxShadow: 6, p: { xs: 2, md: 3 } }}>
+    <Box display="flex" justifyContent="center" alignItems="flex-start" minHeight="80vh" bgcolor="#f5f6fa" sx={{ mt: { xs: 8, md: 10 } }}>
+      <Card sx={{ maxWidth: 440, width: '100%', borderRadius: 4, boxShadow: 6, p: { xs: 2, md: 3 }, mr: { md: 4 } }}>
         <CardContent>
           <Stack alignItems="center" mb={2}>
             <Typography variant="h4" fontWeight="bold" gutterBottom align="center">
@@ -251,6 +252,12 @@ export const UserProfile = () => {
           </Button>
         </CardContent>
       </Card>
+      {/* Mostrar RoleManager solo si el usuario es admin */}
+      {user.rol === 1 && (
+        <Box sx={{ flex: 1, minWidth: 350, maxWidth: 500 }}>
+          <RoleManager />
+        </Box>
+      )}
     </Box>
   );
 };

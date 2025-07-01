@@ -41,3 +41,40 @@ export async function updateUserProfile(id: string, data: {
   if (!res.ok) throw new Error("Error al actualizar usuario");
   return res.json();
 }
+
+export async function getAllUsers() {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No autenticado. Inicia sesión de nuevo.");
+  const res = await fetch(API_URL, {
+    headers: { "Content-Type": "application/json", token },
+  });
+  if (!res.ok) throw new Error("Error al obtener usuarios");
+  const data = await res.json();
+  return data.users;
+}
+
+export async function updateUserRole(email: string, rol: number) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No autenticado. Inicia sesión de nuevo.");
+  const res = await fetch("http://localhost:3000/api/users/rol", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      token,
+    },
+    body: JSON.stringify({ email, rol }),
+  });
+  if (!res.ok) throw new Error("Error al actualizar rol");
+  return res.json();
+}
+
+export async function getAllRoles() {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No autenticado. Inicia sesión de nuevo.");
+  const res = await fetch("http://localhost:3000/api/rol/", {
+    headers: { "Content-Type": "application/json", token },
+  });
+  if (!res.ok) throw new Error("Error al obtener roles");
+  const data = await res.json();
+  return data.roles;
+}
