@@ -236,6 +236,14 @@ export const NavBar = () => {
                 </ListItem>
               </>
             )}
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleDrawerNavigate("/sell")}>
+                <ListItemIcon>
+                  <AppRegistration />
+                </ListItemIcon>
+                <ListItemText primary="Vender" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

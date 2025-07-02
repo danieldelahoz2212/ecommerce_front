@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3000/api/users/login";
+import { API_BASE_URL } from "../utils/apiConfig";
+export const API_URL = `${API_BASE_URL}/users`;
 
 export async function loginUser(data: {
   email: string;

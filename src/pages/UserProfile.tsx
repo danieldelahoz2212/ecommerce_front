@@ -19,13 +19,21 @@ import './UserProfile.css';
 import { RoleManager } from "../components/RoleManager";
 
 interface User {
-  id?: string;
+  id: number;
   name: string;
   lastName: string;
   email: string;
   img?: string | null;
   rol: number;
 }
+
+const getInitialForm = (user: User) => ({
+  name: user.name,
+  lastName: user.lastName,
+  email: user.email,
+  img: user.img || "",
+  password: "",
+});
 
 export const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -40,20 +48,15 @@ export const UserProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const { logout } = useAuth();
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
-      const parsed = JSON.parse(userData);
+      const parsed: User = JSON.parse(userData);
       setUser(parsed);
-      setForm({
-        name: parsed.name || "",
-        lastName: parsed.lastName || "",
-        email: parsed.email || "",
-        img: parsed.img || "",
-        password: "",
-      });
+      setForm(getInitialForm(parsed));
     }
   }, []);
 
@@ -65,15 +68,7 @@ export const UserProfile = () => {
 
   const handleEdit = () => setEditMode(true);
   const handleCancel = () => {
-    if (user) {
-      setForm({
-        name: user.name,
-        lastName: user.lastName,
-        email: user.email,
-        img: user.img || "",
-        password: "",
-      });
-    }
+    if (user) setForm(getInitialForm(user));
     setEditMode(false);
     setError("");
   };
@@ -97,6 +92,7 @@ export const UserProfile = () => {
     if (!user?.id) return;
     setLoading(true);
     setError("");
+    setSuccess("");
     try {
       const dataToSend: Partial<User> & { password?: string } = {
         name: form.name,
@@ -105,11 +101,13 @@ export const UserProfile = () => {
         img: form.img || null,
       };
       if (form.password) dataToSend.password = form.password;
-      const updated = await updateUserProfile(user.id, dataToSend);
+      const updated = await updateUserProfile(user.id.toString(), dataToSend);
       setUser({ ...user, ...updated.user });
       localStorage.setItem("user", JSON.stringify({ ...user, ...updated.user }));
       setEditMode(false);
-      setForm({ ...form, password: "" });
+      setForm(getInitialForm({ ...user, ...updated.user }));
+      setSuccess("Perfil actualizado correctamente");
+      setTimeout(() => setSuccess(""), 2000);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || "Error al actualizar perfil");
@@ -207,6 +205,7 @@ export const UserProfile = () => {
               Rol: <span className={user.rol === 1 ? "role-admin" : "role-user"}>{user.rol === 1 ? "Administrador" : "Usuario"}</span>
             </Typography>
           </Box>
+          {success && <Typography color="success.main" sx={{ mb: 2 }} align="center">{success}</Typography>}
           {error && <Typography color="error" sx={{ mb: 2 }} align="center">{error}</Typography>}
           {!editMode ? (
             <Button
@@ -252,7 +251,6 @@ export const UserProfile = () => {
           </Button>
         </CardContent>
       </Card>
-      {/* Mostrar RoleManager solo si el usuario es admin */}
       {user.rol === 1 && (
         <Box sx={{ flex: 1, minWidth: 350, maxWidth: 500 }}>
           <RoleManager />

@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:3000/api/users";
+import { API_BASE_URL } from "../utils/apiConfig";
+export const API_URL = `${API_BASE_URL}/users`;
 
 export async function registerUser(data: {
   name: string;
