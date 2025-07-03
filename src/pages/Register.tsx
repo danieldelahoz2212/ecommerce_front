@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { SnackbarMessage } from "../components";
 
 export const Register = () => {
   const [password, setPassword] = useState("");
@@ -27,6 +28,15 @@ export const Register = () => {
   const [rol] = useState("3");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity?: "error" | "success";
+  }>({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -36,7 +46,11 @@ export const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isPasswordValid || password !== passwordConfirm) {
-      alert("Verifica tu contraseña.");
+      setSnackbar({
+        open: true,
+        message: "Verifica tu contraseña.",
+        severity: "error",
+      });
       return;
     }
     try {
@@ -44,19 +58,36 @@ export const Register = () => {
       if (res.status && res.token && res.user) {
         login(res.token);
         localStorage.setItem("user", JSON.stringify(res.user));
-        navigate("/");
+        setSnackbar({
+          open: true,
+          message: "Registro exitoso",
+          severity: "success",
+        });
+        setTimeout(() => navigate("/"), 1200);
       } else if (res.status && res.token) {
-        // Si el backend no devuelve el usuario, solo guarda el token
         login(res.token);
-        navigate("/");
+        setSnackbar({
+          open: true,
+          message: "Registro exitoso",
+          severity: "success",
+        });
+        setTimeout(() => navigate("/"), 1200);
       } else {
-        alert("Error al registrar usuario");
+        setSnackbar({
+          open: true,
+          message: "Error al registrar usuario",
+          severity: "error",
+        });
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        setSnackbar({ open: true, message: err.message, severity: "error" });
       } else {
-        alert("Error al registrar usuario");
+        setSnackbar({
+          open: true,
+          message: "Error al registrar usuario",
+          severity: "error",
+        });
       }
     }
   };
@@ -226,6 +257,13 @@ export const Register = () => {
           </Stack>
         </Box>
       </motion.div>
+
+      <SnackbarMessage
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
     </Container>
   );
 };

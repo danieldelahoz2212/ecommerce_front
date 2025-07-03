@@ -26,16 +26,24 @@ import Badge from "@mui/material/Badge";
 import { useCart } from "../context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { SnackbarMessage } from "../components";
 
 export const NavBar = () => {
   const { cart } = useCart();
   const { isAuthenticated, logout } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity?: "success" | "info" }>({
+    open: false,
+    message: "",
+  });
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    window.location.href = "/login";
+    setSnackbar({ open: true, message: "Sesión cerrada correctamente", severity: "success" });
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 1200);
   };
 
   const handleDrawerToggle = () => {
@@ -241,12 +249,18 @@ export const NavBar = () => {
                 <ListItemIcon>
                   <AppRegistration />
                 </ListItemIcon>
-                <ListItemText primary="Vender" />
+                <ListItemText primary="Gestión de Productos" />
               </ListItemButton>
             </ListItem>
           </List>
         </Box>
       </Drawer>
+      <SnackbarMessage
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
     </Box>
   );
 };

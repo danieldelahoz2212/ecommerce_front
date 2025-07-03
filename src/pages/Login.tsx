@@ -15,11 +15,17 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/loginService";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { SnackbarMessage } from "../components";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity?: "error" | "success" }>({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -32,13 +38,13 @@ export const Login = () => {
         localStorage.setItem("user", JSON.stringify(res.user));
         navigate("/user");
       } else {
-        alert("Credenciales incorrectas");
+        setSnackbar({ open: true, message: "Credenciales incorrectas", severity: "error" });
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        alert(err.message);
+        setSnackbar({ open: true, message: err.message, severity: "error" });
       } else {
-        alert("Error al iniciar sesión");
+        setSnackbar({ open: true, message: "Error al iniciar sesión", severity: "error" });
       }
     }
   };
@@ -92,7 +98,7 @@ export const Login = () => {
               fullWidth
               required
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               label="Contraseña"
@@ -100,7 +106,7 @@ export const Login = () => {
               fullWidth
               required
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -150,6 +156,12 @@ export const Login = () => {
           </Stack>
         </Box>
       </motion.div>
+      <SnackbarMessage
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "../utils/apiConfig";
-export const API_URL = `${API_BASE_URL}/users`;
+export const API_URL = `${API_BASE_URL}/users/login`;
 
 export async function loginUser(data: {
   email: string;
