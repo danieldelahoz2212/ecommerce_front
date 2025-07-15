@@ -1,10 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField
+  Box,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
-import { getAllProducts, createProduct, updateProduct } from "../services/productService";
+import {
+  getAllProducts,
+  createProduct,
+  updateProduct,
+} from "../services/productService";
 import { getAllCategories } from "../services/categoryService";
 import { SnackbarMessage } from "../components";
 
@@ -31,10 +50,20 @@ export const Sell = () => {
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
-  const [form, setForm] = useState<Product>({ name: "", description: "", price: 0, category: 1, stock: 0 });
+  const [form, setForm] = useState<Product>({
+    name: "",
+    description: "",
+    price: 0,
+    category: 1,
+    stock: 0,
+  });
   const [formError, setFormError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity?: "success" | "error" }>({ open: false, message: "" });
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity?: "success" | "error";
+  }>({ open: false, message: "" });
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -57,14 +86,18 @@ export const Sell = () => {
     setError("");
     try {
       const data = await getAllProducts();
-      setProducts(Array.isArray(data) ? data : (data.products ?? []));
+      setProducts(Array.isArray(data) ? data : data.products ?? []);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
         setSnackbar({ open: true, message: err.message, severity: "error" });
       } else {
         setError("Error desconocido");
-        setSnackbar({ open: true, message: "Error desconocido", severity: "error" });
+        setSnackbar({
+          open: true,
+          message: "Error desconocido",
+          severity: "error",
+        });
       }
       setProducts([]);
     } finally {
@@ -77,13 +110,21 @@ export const Sell = () => {
       const data = await getAllCategories();
       setCategories(Array.isArray(data) ? data : []);
     } catch {
-      setSnackbar({ open: true, message: "Error al obtener categorías", severity: "error" });
+      setSnackbar({
+        open: true,
+        message: "Error al obtener categorías",
+        severity: "error",
+      });
     }
   };
 
   const handleOpen = (product?: Product) => {
     setEditProduct(product || null);
-    setForm(product ? { ...product } : { name: "", description: "", price: 0, category: 1, stock: 0 });
+    setForm(
+      product
+        ? { ...product }
+        : { name: "", description: "", price: 0, category: 1, stock: 0 }
+    );
     setFormError("");
     setOpen(true);
   };
@@ -110,7 +151,11 @@ export const Sell = () => {
           category: Number(form.category),
           stock: Number(form.stock),
         });
-        setSnackbar({ open: true, message: "Producto actualizado correctamente", severity: "success" });
+        setSnackbar({
+          open: true,
+          message: "Producto actualizado correctamente",
+          severity: "success",
+        });
       } else {
         await createProduct({
           name: form.name,
@@ -119,7 +164,11 @@ export const Sell = () => {
           category: Number(form.category),
           stock: Number(form.stock),
         });
-        setSnackbar({ open: true, message: "Producto creado correctamente", severity: "success" });
+        setSnackbar({
+          open: true,
+          message: "Producto creado correctamente",
+          severity: "success",
+        });
       }
       await fetchProducts();
       setOpen(false);
@@ -129,22 +178,41 @@ export const Sell = () => {
         setSnackbar({ open: true, message: err.message, severity: "error" });
       } else {
         setFormError("Error desconocido");
-        setSnackbar({ open: true, message: "Error desconocido", severity: "error" });
+        setSnackbar({
+          open: true,
+          message: "Error desconocido",
+          severity: "error",
+        });
       }
     } finally {
       setFormLoading(false);
     }
   };
 
-  if (loading) return <Box sx={{ mt: 8, textAlign: 'center' }}><CircularProgress /></Box>;
-  if (error) return <Box sx={{ mt: 8 }}><Alert severity="error">{error}</Alert></Box>;
+  if (loading)
+    return (
+      <Box sx={{ mt: 8, textAlign: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  if (error)
+    return (
+      <Box sx={{ mt: 8 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
 
   return (
     <Box sx={{ mt: 6 }}>
       <Typography variant="h4" align="center" mb={3} fontWeight="bold">
         Gestión de Productos
       </Typography>
-      <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={() => handleOpen()}>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ mb: 2 }}
+        onClick={() => handleOpen()}
+      >
         Agregar Producto
       </Button>
       <TableContainer component={Paper}>
@@ -166,14 +234,16 @@ export const Sell = () => {
                 <TableCell>{p.description}</TableCell>
                 <TableCell>{p.price}</TableCell>
                 <TableCell>
-                  {
-                    categories.find((c) => c.id === Number(p.category))?.name ||
-                    p.category
-                  }
+                  {categories.find((c) => c.id === Number(p.category))?.name ||
+                    p.category}
                 </TableCell>
                 <TableCell>{p.stock}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" size="small" onClick={() => handleOpen(p)}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => handleOpen(p)}
+                  >
                     Editar
                   </Button>
                 </TableCell>
@@ -183,11 +253,38 @@ export const Sell = () => {
         </Table>
       </TableContainer>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-        <DialogTitle>{editProduct ? "Editar Producto" : "Agregar Producto"}</DialogTitle>
+        <DialogTitle>
+          {editProduct ? "Editar Producto" : "Agregar Producto"}
+        </DialogTitle>
         <DialogContent>
-          <TextField label="Nombre" name="name" value={form.name} onChange={handleChange} fullWidth margin="normal" required />
-          <TextField label="Descripción" name="description" value={form.description} onChange={handleChange} fullWidth margin="normal" required />
-          <TextField label="Precio" name="price" type="number" value={form.price} onChange={handleChange} fullWidth margin="normal" required />
+          <TextField
+            label="Nombre"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Descripción"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          <TextField
+            label="Precio"
+            name="price"
+            type="number"
+            value={form.price}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
           <TextField
             select
             label="Categoría"
@@ -198,7 +295,7 @@ export const Sell = () => {
             margin="normal"
             required
             SelectProps={{ native: true }}
-            inputProps={{ 'aria-label': 'Categoría', id: 'category-select' }}
+            inputProps={{ "aria-label": "Categoría", id: "category-select" }}
           >
             <option value="">Selecciona una categoría</option>
             {categories.map((cat) => (
@@ -207,12 +304,30 @@ export const Sell = () => {
               </option>
             ))}
           </TextField>
-          <TextField label="Stock" name="stock" type="number" value={form.stock} onChange={handleChange} fullWidth margin="normal" required />
-          {formError && <Alert severity="error" sx={{ mt: 2 }}>{formError}</Alert>}
+          <TextField
+            label="Stock"
+            name="stock"
+            type="number"
+            value={form.stock}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            required
+          />
+          {formError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {formError}
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleSubmit} variant="contained" color="primary" disabled={formLoading}>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            disabled={formLoading}
+          >
             {editProduct ? "Actualizar" : "Agregar"}
           </Button>
         </DialogActions>

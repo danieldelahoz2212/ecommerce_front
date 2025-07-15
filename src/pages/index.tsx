@@ -4,3 +4,5 @@ export { Login } from "./Login";
 export { Register } from "./Register";
 export { UserProfile } from "./UserProfile";
 export { Sell } from "./Sell";
+export { ProductDetail } from "./ProductDetail";
+export { Orders } from "./Orders";
