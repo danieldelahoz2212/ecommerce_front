@@ -10,12 +10,23 @@ import {
   Paper,
 } from "@mui/material";
 
+interface Order {
+  id: number;
+  idUser: number;
+  totalPrice: number;
+  statusOrder: number;
+  payment: string;
+  status: number;
+}
+
 export const Orders = () => {
-  const navigate = useNavigate();
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
-    <Box sx={{ padding: 2 }}>
+    <Box sx={{ mt: 6 }}>
       <Typography variant="h4" align="center" mb={3} fontWeight={"bold"}>
         Pedidos
       </Typography>
